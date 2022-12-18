@@ -1,39 +1,55 @@
-import * as React from "react";
+import { home_3d_backend } from "../../declarations/home_3d_backend";
+import React, { useRef, useState } from 'react';
+import { Canvas } from "@react-three/fiber";
+import Cylinder3d from "./Cylinder3d";
 import { render } from "react-dom";
-import { home_3d_frontend } from "../../declarations/home_3d_frontend";
+import ReactDOM from 'react-dom'
+import Box from './box.jsx'
 
 const MyHello = () => {
   const [name, setName] = React.useState('');
   const [message, setMessage] = React.useState('');
 
   async function doGreet() {
-    const greeting = await custom_greeting.greet(name);
+    const greeting = await home_3d_backend.greet(name);
     setMessage(greeting);
   }
 
   return (
-    <div style={{ "fontSize": "30px" }}>
-      <div style={{ "backgroundColor": "yellow" }}>
-        <p>Greetings, from DFINITY!</p>
-        <p>
-          {" "}
-          Type your message in the Name input field, then click{" "}
-          <b> Get Greeting</b> to display the result.
-        </p>
-      </div>
-      <div style={{ margin: "30px" }}>
-        <input
-          id="name"
-          value={name}
-          onChange={(ev) => setName(ev.target.value)}
-        ></input>
-        <button onClick={doGreet}>Get Greeting!</button>
-      </div>
-      <div>
-        Greeting is: "
-        <span style={{ color: "blue" }}>{message}</span>"
-      </div>
-    </div>
+    <>
+      <section className='App-header'>
+        {/* Canvas 1 */}
+        <Canvas>
+          <pointLight position={[10, 10, 10]} />
+          <ambientLight />
+          <Cylinder3d position={[-1.2, 0, 0]} />
+          <Cylinder3d position={[1.2, 0, 0]} />
+        </Canvas>
+ 
+        {/* Canvas 2 */}
+        <Canvas>
+          <pointLight position={[10, 10, 10]} />
+          <ambientLight intensity={0.5} />
+          <Cylinder3d position={[-1.2, 0, 0]} wireframe={true} />
+          <Cylinder3d position={[1.2, 0, 0]} wireframe={true} />
+        </Canvas>
+ 
+        {/* Canvas 3 */}
+        <Canvas>
+          <pointLight position={[10, 10, 10]} />
+          <ambientLight color={"red"} />
+          <Cylinder3d position={[-1.2, 0, 0]} />
+          <Cylinder3d position={[1.2, 0, 0]} />
+        </Canvas>
+
+        <Canvas>
+          <ambientLight />
+          <pointLight position={[10, 10, 10]} />
+          <Box position={[-1.2, 0, 0]} />
+          <Box position={[1.2, 0, 0]} />
+      </Canvas>
+      </section>
+    </>
   );
 };
 
